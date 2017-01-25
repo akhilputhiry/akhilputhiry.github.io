@@ -63,10 +63,10 @@ function success(pos) {
 	  first_location = crd
   }
   msg = ""
-  //msg = 'Your current position is:';
-  //msg = msg+`Latitude : ${crd.latitude}`;
-  //msg = msg+`Longitude: ${crd.longitude}`;
-  //msg = msg+`More or less ${crd.accuracy} meters.`;
+  msg = 'Your current position is:';
+  msg = msg+`Latitude : ${crd.latitude}`;
+  msg = msg+`Longitude: ${crd.longitude}`;
+  msg = msg+`More or less ${crd.accuracy} meters.`;
   if (second_location){
 	distance = getDistanceFromLatLonInKm(crd.latitude,crd.longitude,second_location.latitude,second_location.longitude ) 
 	msg = msg+` Speed = ${distance*60*60/8}`;
