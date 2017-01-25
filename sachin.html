@@ -1,0 +1,93 @@
+<html>
+<head>
+
+
+</head>
+
+<body>
+<div id="mss"></div>
+<script>
+var options = {
+  enableHighAccuracy: true,
+  timeout: 6000,
+  maximumAge: 0
+};
+
+ristricted_area = [[18.581984,73.738641]]
+
+function check_location(curr_lat, curr_lon){
+  msg = ""
+  total_restricted_area = ristricted_area.length
+  for(i=0; i<total_restricted_area;i++){
+    dis = getDistanceFromLatLonInKm(curr_lat,curr_lon,ristricted_area[i][0], ristricted_area[i][1])
+    distance_from_ristrict_ar = Math.round(dis*1000)
+	  if(distance_from_ristrict_ar < 100){
+		msg = '<div style="font-color:red"><strong>Your child in wrong area. Please contact with him. distance '+distance_from_ristrict_ar+'</strong></div>'
+		// Call web service to show alert
+		// current pos , restricted pos, distance
+	  }
+  }
+  // msg = msg+`******${distance_from_ristrict_ar} mt ***********<br>`
+
+
+  document.getElementById("mss").innerHTML = "<br />"+document.getElementById("mss").innerHTML+msg; 
+}
+
+first_location = null
+second_location = null
+
+function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2-lat1);  // deg2rad below
+  var dLon = deg2rad(lon2-lon1); 
+  var a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+    Math.sin(dLon/2) * Math.sin(dLon/2); 
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  var d = R * c; // Distance in km
+  return d;
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI/180)
+}
+
+function success(pos) {
+  
+  var crd = pos.coords;
+  if (crd.latitude && crd.longitude){
+      if (first_location){
+	    second_location = first_location
+		}
+	  first_location = crd
+  }
+  msg = ""
+  //msg = 'Your current position is:';
+  //msg = msg+`Latitude : ${crd.latitude}`;
+  //msg = msg+`Longitude: ${crd.longitude}`;
+  //msg = msg+`More or less ${crd.accuracy} meters.`;
+  if (second_location){
+	distance = getDistanceFromLatLonInKm(crd.latitude,crd.longitude,second_location.latitude,second_location.longitude ) 
+	msg = msg+` Speed = ${distance*60*60/8}`;
+  }
+  
+  document.getElementById("mss").innerHTML = "<br>"+document.getElementById("mss").innerHTML+msg;
+  check_location(crd.latitude, crd.longitude)
+  };
+
+function error(err) {
+  document.getElementById("mss").innerHTML = document.getElementById("mss").innerHTML+`ERROR(${err.code}): ${err.message}`
+};
+
+function check_s(){
+	document.getElementById("mss").innerHTML = document.getElementById("mss").innerHTML + "================End=======================<br />"
+	navigator.geolocation.getCurrentPosition(success, error, options);
+	document.getElementById("mss").innerHTML = document.getElementById("mss").innerHTML + "================End=======================<br />"
+	setTimeout( check_s, 8000)
+	}
+check_s();
+</script>
+</body>
+
+</html>
