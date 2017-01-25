@@ -21,7 +21,7 @@ function check_location(curr_lat, curr_lon){
   for(i=0; i<total_restricted_area;i++){
     dis = getDistanceFromLatLonInKm(curr_lat,curr_lon,ristricted_area[i][0], ristricted_area[i][1])
     distance_from_ristrict_ar = Math.round(dis*1000)
-	  if(distance_from_ristrict_ar < 1000){
+	  if(1 || distance_from_ristrict_ar < 1000){
 		msg = '<div style="font-color:red"><strong>Your child in wrong area. Please contact with him. distance '+distance_from_ristrict_ar+'</strong></div>'
 		// Call web service to show alert
 		// current pos , restricted pos, distance
