@@ -1,2 +1,1 @@
-# akhilputhiry.github.io
-My portfolio site
+Content for https://akhilputhiry.dev/
